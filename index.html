@@ -3,51 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube'a Giden Buton</title>
+    <title>E-Ticaret Buton ve Mağaza Sistemi</title>
     
     <style>
-    /* Ekranın ortasında şık durması için genel ayarlar */
-    .buton-konteyner { 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        margin: 50px; 
+    /* 1. GENEL TASARIM VE RENKLER (DARK THEME) */
+    body {
+        background-color: #0d1117;
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth; /* Yukarı/Aşağı yumuşak kayma efekti */
+    }
+
+    /* Üst Karşılama Alanı */
+    .hero-alanı {
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(circle, #1f293d 0%, #0d1117 100%);
+    }
+
+    .hero-alanı h1 {
+        margin-bottom: 20px;
+        font-size: 32px;
+    }
+
+    /* Ana Tetikleyici Buton */
+    .magaza-butonu {
+        background-color: #3861fb;
+        color: white;
+        padding: 15px 35px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(56, 97, 251, 0.4);
+        transition: background 0.3s, transform 0.1s;
+    }
+
+    .magaza-butonu:hover { background-color: #2b4ecf; }
+    .magaza-butonu:active { transform: scale(0.98); }
+
+    /* 2. MAĞAZA VE KUTUCUKLARIN ALANI */
+    .magaza-konteyner {
+        max-width: 1100px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .magaza-baslik {
+        border-bottom: 2px solid #212631;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Yukarı Çıkış Butonu */
+    .yukari-butonu {
+        background: #212631;
+        color: #b1b5c4;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+    .yukari-butonu:hover { background: #2d3446; color: white; }
+
+    /* GÖRSELDEKİ SATIR (KUTUCUK) TASARIMI */
+    .urun-satiri {
+        background-color: #161b22;
+        border: 1px solid #212631;
+        border-radius: 10px;
+        padding: 15px 25px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: border-color 0.3s;
+    }
+
+    .urun-satiri:hover {
+        border-color: #3861fb; /* Üzerine gelince görseldeki gibi mavi çizgi parlar */
+    }
+
+    /* Sol Kısım: Görsel ve Metinler */
+    .urun-sol {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .urun-logo-kutu {
+        width: 55px;
+        height: 55px;
+        background-color: #212631;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+    }
+
+    .urun-detay {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .indirim-rozet {
+        background-color: rgba(0, 200, 81, 0.1);
+        color: #00c851;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        width: fit-content;
+    }
+
+    .urun-adi {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .urun-teslimat {
+        font-size: 12px;
+        color: #8b949e;
+    }
+
+    /* Sağ Kısım: Fiyat, Adet ve Giriş Butonu */
+    .urun-sag {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .fiyat-alani {
+        text-align: right;
+    }
+
+    .eski-fiyat {
+        font-size: 12px;
+        color: #8b949e;
+        text-decoration: line-through;
+        margin-bottom: 2px;
+    }
+
+    .yeni-fiyat {
+        font-size: 18px;
+        color: #00c851; /* Görseldeki yeşil fiyat */
+        font-weight: bold;
+    }
+
+    /* Adet Seçici (- 1 +) */
+    .adet-seçici {
+        display: flex;
+        align-items: center;
+        background-color: #0d1117;
+        border: 1px solid #212631;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .adet-btn {
+        background: none;
+        border: none;
+        color: #8b949e;
+        font-size: 16px;
+        width: 25px;
+        cursor: pointer;
+    }
+    .adet-btn:hover { color: white; }
+
+    .adet-sayi {
+        font-size: 14px;
+        font-weight: bold;
+        width: 25px;
         text-align: center;
     }
 
-    /* Kırmızı, şık bir YouTube Butonu tasarımı */
-    .youtube-butonu {
-        display: inline-block;
-        background-color: #ff0000; /* YouTube kırmızısı */
-        color: white; 
-        padding: 14px 28px;
-        font-size: 18px; 
-        border-radius: 8px; 
+    /* Sarı Giriş Yap Butonu */
+    .giris-btn {
+        background-color: #f5a623; /* Görseldeki sarı tonu */
+        color: #0d1117;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
         font-weight: bold;
-        text-decoration: none; /* Altındaki çizgiyi kaldırır */
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: background-color 0.3s ease, transform 0.1s ease;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.2s;
     }
 
-    /* Fareyle üzerine gelince rengi hafif koyulaşsın */
-    .youtube-butonu:hover {
-        background-color: #cc0000;
-    }
-
-    /* Butona basıldığında hafif tık hissi versin */
-    .youtube-butonu:active {
-        transform: scale(0.97);
-    }
+    .giris-btn:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
 
-    <div class="buton-konteyner">
-        <h2>Kanalımı Ziyaret Edin</h2>
-        <p>Aşağıdaki butona basarak YouTube sayfasına hızlıca geçiş yapabilirsiniz.</p>
-
-        <a href="https://www.youtube.com/@onur999e" target="_blank" class="youtube-butonu">
-            YouTube'u Aç ➔
-        </a>
+    <div class="hero-alanı">
+        <h1>Mağazamıza Hoş Geldiniz</h1>
+        <button class="magaza-butonu" onclick="document.getElementById('magaza').scrollIntoView();">
+            Ürün Listesini Aç ➔
+        </button>
     </div>
+
+    <div id="magaza" class="magaza-konteyner">
+        
+        <div class="magaza-baslik">
+            <h2>Mevcut Paketler</h2>
+            <button class="yukari-butonu" onclick="window.scrollTo(0,0);">▲ Yukarı Çık</button>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">100 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">250,00 TL</div>
+                    <div class="yeni-fiyat">137,49 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">200 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">189,99 TL</div>
+                    <div class="yeni-fiyat">141,24 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">290 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">189,99 TL</div>
+                    <div class="yeni-fiyat">144,99 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">380 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">239,99 TL</div>
+                    <div class="yeni-fiyat">178,73 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">400 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">289,99 TL</div>
+                    <div class="yeni-fiyat">237,73 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">800 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">450,00 TL</div>
+                    <div class="yeni-fiyat">340,00 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">1000 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">550,00 TL</div>
+                    <div class="yeni-fiyat">420,00 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">2000 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">1100,00 TL</div>
+                    <div class="yeni-fiyat">820,00 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">4500 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">2400,00 TL</div>
+                    <div class="yeni-fiyat">1850,00 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+        <div class="urun-satiri">
+            <div class="urun-sol">
+                <div class="urun-logo-kutu">📦</div>
+                <div class="urun-detay">
+                    <span class="indirim-rozet">%30 İNDİRİM</span>
+                    <span class="urun-adi">10000 Robux Global</span>
+                    <span class="urun-teslimat">7/24 Otomatik Teslimat.</span>
+                </div>
+            </div>
+            <div class="urun-sag">
+                <div class="fiyat-alani">
+                    <div class="eski-fiyat">5000,00 TL</div>
+                    <div class="yeni-fiyat">3900,00 TL</div>
+                </div>
+                <div class="adet-seçici">
+                    <button class="adet-btn" onclick="azalt(this)">-</button>
+                    <span class="adet-sayi">1</span>
+                    <button class="adet-btn" onclick="artir(this)">+</button>
+                </div>
+                <button class="giris-btn">🔐 Giriş Yap</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    function artir(buton) {
+        var adetAlani = buton.previousElementSibling;
+        var mevcutAdet = parseInt(adetAlani.innerText);
+        adetAlani.innerText = mevcutAdet + 1;
+    }
+
+    function azalt(buton) {
+        var adetAlani = buton.nextElementSibling;
+        var mevcutAdet = parseInt(adetAlani.innerText);
+        if (mevcutAdet > 1) {
+            adetAlani.innerText = mevcutAdet - 1;
+        }
+    }
+    </script>
 
 </body>
 </html>
