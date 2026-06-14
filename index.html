@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube'a Giden Buton</title>
+    
+    <style>
+    /* Ekranın ortasında şık durması için genel ayarlar */
+    .buton-konteyner { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        margin: 50px; 
+        text-align: center;
+    }
+
+    /* Kırmızı, şık bir YouTube Butonu tasarımı */
+    .youtube-butonu {
+        display: inline-block;
+        background-color: #ff0000; /* YouTube kırmızısı */
+        color: white; 
+        padding: 14px 28px;
+        font-size: 18px; 
+        border-radius: 8px; 
+        font-weight: bold;
+        text-decoration: none; /* Altındaki çizgiyi kaldırır */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    /* Fareyle üzerine gelince rengi hafif koyulaşsın */
+    .youtube-butonu:hover {
+        background-color: #cc0000;
+    }
+
+    /* Butona basıldığında hafif tık hissi versin */
+    .youtube-butonu:active {
+        transform: scale(0.97);
+    }
+    </style>
+</head>
+<body>
+
+    <div class="buton-konteyner">
+        <h2>Kanalımı Ziyaret Edin</h2>
+        <p>Aşağıdaki butona basarak YouTube sayfasına hızlıca geçiş yapabilirsiniz.</p>
+
+        <a href="https://www.youtube.com/@onur999e" target="_blank" class="youtube-butonu">
+            YouTube'u Aç ➔
+        </a>
+    </div>
+
+</body>
+</html>
